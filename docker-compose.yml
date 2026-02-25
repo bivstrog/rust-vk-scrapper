@@ -1,0 +1,9 @@
+services:
+  db:
+    ports:
+      - 5432:5432
+    image: postgres@sha256:e002abfaf7b0f1015b7510f66b709e2bacbecc7762c428634c27a3c5e58ffbae
+    environment:
+      POSTGRES_USER: "master"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "vk_scrapper_db"
