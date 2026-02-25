@@ -1,6 +1,7 @@
 use sqlx::postgres::PgPool;
 use sqlx::Row;
 use crate::utils::{get_pooling_period_seconds, get_pooling_delta_seconds};
+use crate::models::{PostDetails, PostInfoData, PostWithData};
 
 
 pub async fn is_ready_to_finish(pool: &PgPool, post_id: i32) -> Result<bool, sqlx::Error> {
@@ -100,13 +101,6 @@ pub async fn get_posts_needing_polling(pool: &PgPool) -> Result<Vec<(i32, String
     Ok(results.iter().map(|row| (row.get("id"), row.get("vk_id"))).collect())
 }
 
-pub struct PostDetails {
-    pub id: i32,
-    pub vk_id: String,
-    pub dt_parse_begin: chrono::NaiveDateTime,
-    pub dt_parse_end: chrono::NaiveDateTime,
-}
-
 pub async fn get_or_create_post_with_prolong(
     pool: &PgPool,
     vk_id: &str,
@@ -189,22 +183,6 @@ pub async fn get_or_create_post_with_prolong(
     tx.commit().await?;
     
     Ok(post_details)
-}
-
-pub struct PostInfoData {
-    pub comments_count: i32,
-    pub likes_count: i32,
-    pub views_count: i32,
-    pub reposts_count: i32,
-    pub info_time: chrono::NaiveDateTime,
-}
-
-pub struct PostWithData {
-    pub id: i32,
-    pub vk_id: String,
-    pub dt_parse_begin: chrono::NaiveDateTime,
-    pub dt_parse_end: chrono::NaiveDateTime,
-    pub data: Vec<PostInfoData>,
 }
 
 pub async fn get_post_with_data(pool: &PgPool, scrapper_id: i32) -> Result<Option<PostWithData>, sqlx::Error> {

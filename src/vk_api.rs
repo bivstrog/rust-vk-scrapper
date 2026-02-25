@@ -1,16 +1,8 @@
 use reqwest;
 use rocket::response::status;
-use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use crate::utils::{get_vk_token, get_vk_api_domain, get_vk_api_version};
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct VkPostStats {
-    pub comments_count: u64,
-    pub likes_count: u64,
-    pub views_count: u64,
-    pub reposts_count: u64,
-}
+use crate::models::VkPostStats;
 
 pub async fn call_vk(post_id: &str) -> Result<VkPostStats, status::BadRequest<String>> {
     let token = get_vk_token().map_err(|e| status::BadRequest(e))?;

@@ -1,6 +1,6 @@
 use sqlx::postgres::PgPool;
 use sqlx::postgres::PgPoolOptions;
-use crate::vk_api::VkPostStats;
+use crate::models::VkPostStats;
 
 pub fn get_pooling_period_seconds() -> i32 {
     std::env::var("POOLING_PERIOD_SECONDS")
