@@ -1,6 +1,6 @@
+use crate::models::VkPostStats;
 use sqlx::postgres::PgPool;
 use sqlx::postgres::PgPoolOptions;
-use crate::models::VkPostStats;
 
 pub fn get_pooling_period_seconds() -> i32 {
     std::env::var("POOLING_PERIOD_SECONDS")
@@ -17,9 +17,9 @@ pub fn get_pooling_delta_seconds() -> i32 {
 }
 
 pub async fn get_db_pool() -> Result<PgPool, sqlx::Error> {
-    let database_url = std::env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set in .env file");
-    
+    let database_url =
+        std::env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env file");
+
     PgPoolOptions::new()
         .max_connections(5)
         .connect(&database_url)
@@ -39,6 +39,8 @@ pub fn get_vk_api_version() -> String {
 }
 
 pub fn is_post_stats_empty(stats: &VkPostStats) -> bool {
-    stats.likes_count == 0 && stats.comments_count == 0 &&
-    stats.reposts_count == 0 && stats.views_count == 0
+    stats.likes_count == 0
+        && stats.comments_count == 0
+        && stats.reposts_count == 0
+        && stats.views_count == 0
 }
